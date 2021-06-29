@@ -11,21 +11,44 @@ import SignInAndSignUpPage from './pages/signin-and-signup-page/signin-and-signu
 
 import {Switch,Route} from 'react-router-dom';
 
+import {auth} from './firebase/firebase.utils';
 
 
 
 
-function App() {
-  return (
-    <div>
-      <Header />
-      <Switch>  
-        <Route exact path="/" component={HomePage} />
-        <Route  path="/shop" component={ShopPage} />
-        <Route path="/signin" component={SignInAndSignUpPage} />
-      </Switch>
-    </div>
-  );
+
+class App extends React.Component {
+  
+  constructor() {
+    super();
+    this.state = {
+      currentUSer:null
+    }
+  }
+
+  unSubscribeFromAuth = null;
+  componentDidMount() {
+    this.unSubscribeFromAuth = auth.onAuthStateChanged(user => {
+      this.setState({currentUSer:user})
+      console.log(user)})
+  }
+ 
+  componentWillMount(){
+    this.unSubscribeFromAuth = null;
+  }
+
+  render() {
+    return (
+      <div>
+        <Header currentUser={this.state.currentUSer} />
+        <Switch>  
+          <Route exact path="/" component={HomePage} />
+          <Route  path="/shop" component={ShopPage} />
+          <Route path="/signin" component={SignInAndSignUpPage} />
+        </Switch>
+      </div>
+    );
+  }
 }
 
 export default App;

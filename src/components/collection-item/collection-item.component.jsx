@@ -3,7 +3,7 @@ import React from 'react';
 import './collection-item.styles.scss';
 
 const CollectionItem = ({name,imageUrl,price}) => (
-    <dvi class="collection-item">
+    <div class="collection-item">
         <div 
         className="image"
         style = {{backgroundImage:`url(${imageUrl})`}}
@@ -13,7 +13,7 @@ const CollectionItem = ({name,imageUrl,price}) => (
             <span className="price">{price}$</span>
         </div>
 
-    </dvi>
+    </div>
 );
 
 export default CollectionItem;
