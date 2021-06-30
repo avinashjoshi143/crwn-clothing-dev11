@@ -2,19 +2,12 @@ import React from 'react';
 import './App.css';
 
 import HomePage from './pages/homepage/homepage.component';
-
 import ShopPage from './pages/shoppage/shoppage.component';
-
 import Header from './components/header/header.component';
-
 import SignInAndSignUpPage from './pages/signin-and-signup-page/signin-and-signup-page.component';
-
 import {Switch,Route} from 'react-router-dom';
-
 import {auth, createUserProfileDocument} from './firebase/firebase.utils';
-
 import {connect} from 'react-redux';
-
 import setCurrentUser from './redux/user/user.actions';
 
 
