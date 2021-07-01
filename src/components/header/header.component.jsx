@@ -26,7 +26,11 @@ const Header = ({currentUser,hidden}) => (
                 :
                 (<Link className="option" to='/signin'>SIGN IN</Link>)
             }
-            <CartIcon />    
+            {
+                currentUser ? 
+                <CartIcon /> :
+                null
+            }
         </div>
         {
             hidden ? null :
