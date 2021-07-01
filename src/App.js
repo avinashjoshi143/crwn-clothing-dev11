@@ -31,7 +31,6 @@ class App extends React.Component {
               ...snapshot.data()
             }
           });
-          console.log(this.state);
         });
       }
       else {
@@ -41,13 +40,14 @@ class App extends React.Component {
   }
 
   render() {
+    const {currentUser} = this.props;
     return (
       <div>
         <Header />
         <Switch>  
-          <Route exact path="/" component={HomePage} />
-          <Route  path="/shop" component={ShopPage} />
-          <Route exact path="/signin" render={() => this.props.currentUser ?<Redirect to='/' /> : <SignInAndSignUpPage />} />
+          <Route exact path="/" render={() => currentUser ?<HomePage/> : <Redirect to='/signin' />} />
+          <Route exact path="/shop" render={() => currentUser? <ShopPage /> : <Redirect to='/signin' />} />
+          <Route exact path="/signin" render={() => currentUser ?<Redirect to='/' /> : <SignInAndSignUpPage />} />
         </Switch>
       </div>
     );
