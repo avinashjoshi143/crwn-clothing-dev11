@@ -18,6 +18,7 @@ const CheckoutItem = ({cartItem,dispatch}) => {
         </span>
         <span className="price">{price}</span>
         <div className="remove-button" onClick={()=> {dispatch(clearItemFromCart(cartItem))}}>&#10006;</div>
+        
     </div>
 )};
 
