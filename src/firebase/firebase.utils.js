@@ -57,3 +57,37 @@ provider.setCustomParameters({prompt: 'select_account'});
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
 export default firebase;
+
+// Adding the shop data to the firestore database. only once we need to run to push the shop data to databse as batch request.
+
+export const addCollectionAndDocument = async (collectionKey, collectionToAdd) => {
+    const collectionRef = firestore.collection(collectionKey);
+
+    const batch = firestore.batch();
+
+    collectionToAdd.forEach(obj => {
+        const newDocRef = collectionRef.doc();
+        batch.set(newDocRef,obj);
+    });
+    return await batch.commit();
+}
+
+
+// function to convert the snapshot object into a javascript object
+
+export const convertCollectionsSnapshotToMap = (collections) => {
+    const transformedCollection = collections.docs.map(doc => {
+        const {title,items} = doc.data();
+
+        return {
+            routeName: encodeURI(title.toLowerCase()),
+            id:doc.id,
+            title,
+            items
+        }
+    });
+    return transformedCollection.reduce((accumalator,collection) => {
+        accumalator[collection.title.toLowerCase()] = collection;
+        return accumalator;
+    },{});
+}

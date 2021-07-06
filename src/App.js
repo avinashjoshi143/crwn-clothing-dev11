@@ -22,11 +22,12 @@ import {createStructuredSelector} from 'reselect';
 
 
 
+
 class App extends React.Component {
   
 
   componentDidMount() {
-    const {setCurrentUser} = this.props;
+    const {setCurrentUser,collectionArray} = this.props;
     auth.onAuthStateChanged(async userAuth => {
 
       if(userAuth) {
@@ -64,7 +65,7 @@ class App extends React.Component {
 }
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
 });
 
 const mapDispatchToProps = dispatch => ({
