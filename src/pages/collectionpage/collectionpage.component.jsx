@@ -3,12 +3,13 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { selectCollectionItem } from '../../redux/shop/shop.selectors';
 
+
 import { CollectionPageContainer,
     CollectionTitle,
     CollectionItemContainer,
     CollectionItemComponent} from './collectionpage.styles';
 
-const CollectionPage = ({collections}) => {
+const CollectionPage = ({collections,dispatch,match}) => {
     const {title, items} = collections;
     return(
         <CollectionPageContainer>
