@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {Route} from 'react-router-dom';
 
@@ -10,42 +10,42 @@ import { CollectionOverviewContainer } from '../../components/collection-overvie
 
 import {CollectionPageContainer} from '../collectionpage/collectionpage.container';
 
-class ShopPage extends React.Component {
+const ShopPage = ({fecthCollectionStartAsync,match})=> {
     
+    useEffect(()=>{
+        fecthCollectionStartAsync();
+    },[fecthCollectionStartAsync]);
     
     // unsubscribeFromSnapshot = null;
 
-    componentDidMount() {
+    // componentDidMount() {
+    //         fecthCollectionStartAsync();
+    //     // this.unsubscribeFromSnapshot = collectionRef.onSnapshot(async snapshot => {
+    //     //     const collectionMap = convertCollectionsSnapshotToMap(snapshot);
+    //     //     updateCollectionMap(collectionMap);
+    //     //     this.setState({loading: false});
+    //     // });
 
-        const {fecthCollectionStartAsync} = this.props;
-         fecthCollectionStartAsync();
-        // this.unsubscribeFromSnapshot = collectionRef.onSnapshot(async snapshot => {
-        //     const collectionMap = convertCollectionsSnapshotToMap(snapshot);
-        //     updateCollectionMap(collectionMap);
-        //     this.setState({loading: false});
-        // });
+    //     // this is a promise pattern that lost the live update.
+    //     // this we are implemented inside the redux actions 
+    //     // collectionRef.get().then(async snapshot => {
+    //     //         const collectionMap = convertCollectionsSnapshotToMap(snapshot);
+    //     //         updateCollectionMap(collectionMap);
+    //     //         this.setState({loading: false});
+    //     //     });
 
-        // this is a promise pattern that lost the live update.
-        // this we are implemented inside the redux actions 
-        // collectionRef.get().then(async snapshot => {
-        //         const collectionMap = convertCollectionsSnapshotToMap(snapshot);
-        //         updateCollectionMap(collectionMap);
-        //         this.setState({loading: false});
-        //     });
+    //     // fetches the data and its nested to way long but we can still get the required data in the form its unnecessary for our application
+    //     // f'etch('https://firestore.googleapis.com/v1/projects/crwn-db-f8734/databases/(default)/documents/collections')
+    //     // .then(response => response.json())
+    //     // .then(data => console.log(data));'
 
-        // fetches the data and its nested to way long but we can still get the required data in the form its unnecessary for our application
-        // f'etch('https://firestore.googleapis.com/v1/projects/crwn-db-f8734/databases/(default)/documents/collections')
-        // .then(response => response.json())
-        // .then(data => console.log(data));'
-
-    }
+    // }
 
     // componentWillUnmount() {
     //     this.unsubscribeFromSnapshot();
     // }
  
-    render() {
-        const {match} = this.props;
+
         return (
             <div>
                 <Route exact path={`${match.path}`} component = {CollectionOverviewContainer} />
@@ -53,10 +53,6 @@ class ShopPage extends React.Component {
             </div>
         );
     }      
-}
-
-
-
 
 const mapDispatchToProps = dispatch => ({
     fecthCollectionStartAsync: ()=> dispatch(fecthCollectionStartAsync())

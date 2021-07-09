@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 
 import FormInput from '../form-input/form-input.component';
 import CustomButton from '../custom-button/custom-button.component';
@@ -8,28 +8,22 @@ import {SignInContainer,
     SignInTitle,
     CustomButtonContainer} from './signin.styles';
 
-class SignIn extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            email : "",
-            password : ""
-        }
-    }
+const SignIn = ()=> {
+    const[userCredential,setUserCredential] = useState({email:'',password:''});
+    const {email,password} = userCredential;
 
-    handleChange = event => {
+    const handleChange = event => {
         const {value,name} = event.target;
-        this.setState({[name]:value})
+        setUserCredential({...userCredential,[name]:value})
     }
-
-    handleSubmit = async event => {
+     
+    const handleSubmit = async event => {
         event.preventDefault();
-        const {email,password} = this.state;
 
         try {
 
             await auth.signInWithEmailAndPassword(email,password);
-            this.setState({email:"",password:""});
+            setUserCredential({...userCredential,email:"",password:""});
             
         } catch(error) {
             console.error(error);
@@ -37,17 +31,16 @@ class SignIn extends React.Component {
 
     }
 
-    render() {
         return(
             <SignInContainer className="signin">
                 <SignInTitle> I already have an account</SignInTitle>
                 <span>Sign in with your email and password</span>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={handleSubmit}>
                     <FormInput 
                     type="email"
                     name="email"
-                    handleChange={this.handleChange}
-                    value={this.state.email}
+                    handleChange={handleChange}
+                    value={email}
                     label = "email"
                     required
                     />
@@ -55,8 +48,8 @@ class SignIn extends React.Component {
                     <FormInput 
                     type="password"
                     name="password"
-                    handleChange={this.handleChange}
-                    value={this.state.password}
+                    handleChange={handleChange}
+                    value={password}
                     label="password"
                     required
                     />
@@ -68,6 +61,5 @@ class SignIn extends React.Component {
             </SignInContainer>
         );
     }
-}
 
 export default SignIn;

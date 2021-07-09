@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './App.css';
 
 import HomePage from './pages/homepage/homepage.component';
@@ -23,40 +23,38 @@ import {createStructuredSelector} from 'reselect';
 
 
 
-class App extends React.Component {
+const App = ({setCurrentUser,currentUser})=> {
   
-  unsubscribeFromAuth = null;
-
-  componentDidMount() {
-    const {setCurrentUser,collectionArray} = this.props;
-    this.unsubscribeFromAuth =  auth.onAuthStateChanged(async userAuth => {
-
-      if(userAuth) {
-        const userRef = await createUserProfileDocument(userAuth);
-
-        userRef.onSnapshot(snapshot =>{
-          setCurrentUser({
-            currentUser:{
-              id: snapshot.id,
-              ...snapshot.data()
-            }
+  useEffect(()=>{
+    console.log("i am subscribing");
+       const unSubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      
+        if(userAuth) {
+          const userRef = await createUserProfileDocument(userAuth);
+      
+          userRef.onSnapshot(snapshot =>{
+            setCurrentUser({
+              currentUser:{
+                id: snapshot.id,
+                ...snapshot.data()
+              }
+            });
           });
-        });
-      }
-      else {
-        setCurrentUser(userAuth);
-      }
-    });
-  }
+        }
+        else {
+          setCurrentUser(userAuth);
+        }
+      });
 
-  componentWillUnmount() {
-    this.unsubscribeFromAuth();
-  }
+      return () => {
+        unSubscribeFromAuth();
+      }
+  },[setCurrentUser])
 
-  render() {
-    const {currentUser} = this.props;
-    return (
-      <div>
+  
+  
+  return (
+    <div>
         <Header />
         <Switch>  
           <Route exact path="/" render={() => currentUser ?<HomePage/> : <Redirect to='/signin' />} />
@@ -66,7 +64,6 @@ class App extends React.Component {
         </Switch>
       </div>
     );
-  }
 }
 
 const mapStateToProps = createStructuredSelector({

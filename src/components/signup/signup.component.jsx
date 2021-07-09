@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 
 import FormInput from '../form-input/form-input.component'
 
@@ -10,20 +10,18 @@ import {auth, createUserProfileDocument} from '../../firebase/firebase.utils';
 import {SignUpContainer,
     SingUpTitle} from './signup.styles';
 
-class SignUp extends React.Component {
-    constructor() {
-        super();
-        this.state = {
-            email:"",
-            displayName:"",
-            password:"",
-            confirmPassword:""
-        }
-    }
+const SignUp = ()=> {
 
-    handleSubmit = async event => {
+    const [userCredential,setUSerCredential] = useState({
+        email:"",
+        displayName:"",
+        password:"",
+        confirmPassword:""
+    });
+    const {displayName, email, password, confirmPassword} = userCredential;
+
+    const handleSubmit = async event => {
         event.preventDefault();
-        const {displayName, email, password, confirmPassword} = this.state
 
         if(password !== confirmPassword) {
             alert(`password don't match`);
@@ -36,7 +34,8 @@ class SignUp extends React.Component {
 
                 await createUserProfileDocument(user,{displayName});
 
-                this.setState({
+                setUSerCredential({
+                    ...userCredential,
                     email:"",
                     displayName:"",
                     password:"",
@@ -49,25 +48,20 @@ class SignUp extends React.Component {
         }  
     };
 
-    handleChange = event => {
+    const handleChange = event => {
         const {name,value} = event.target;
-        this.setState({[name]:value});
+        setUSerCredential({...userCredential,[name]:value});
     }
-
-
-
-    render() {
-        const {displayName, email, password, confirmPassword} = this.state
         return(
             <SignUpContainer>
                     <SingUpTitle>I do not have account</SingUpTitle>
                     <span>signup with your email and password</span>
-                <form onSubmit={this.handleSubmit}>
+                <form onSubmit={handleSubmit}>
                     <FormInput 
                     type="text"
                     name="displayName"
                     value={displayName}
-                    handleChange={this.handleChange}
+                    handleChange={handleChange}
                     label="Display Name"
                     required
                     />
@@ -75,7 +69,7 @@ class SignUp extends React.Component {
                     type="email"
                     name="email"
                     value={email}
-                    handleChange={this.handleChange}
+                    handleChange={handleChange}
                     label="Email"
                     required
                     />
@@ -83,7 +77,7 @@ class SignUp extends React.Component {
                     type="password"
                     name="password"
                     value={password}
-                    handleChange={this.handleChange}
+                    handleChange={handleChange}
                     label="Password"
                     required
                     />
@@ -91,7 +85,7 @@ class SignUp extends React.Component {
                     type="password"
                     name="confirmPassword"
                     value={confirmPassword}
-                    handleChange={this.handleChange}
+                    handleChange={handleChange}
                     label="Confirm Password"
                     required
                     />
@@ -100,6 +94,4 @@ class SignUp extends React.Component {
             </SignUpContainer>
         );
     }
-}
-
 export default SignUp;
